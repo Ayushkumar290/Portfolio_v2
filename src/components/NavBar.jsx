@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "../lib/utils";
+import { Menu ,X} from "lucide-react";
 const navItems = [
     { name: "Home", href: "#hero" },
     { name: "About", href: "#About" },
@@ -24,7 +25,7 @@ export const NavBar = () => {
         window.addEventListener("scroll", handleScroll)
 
         return () => window.removeEventListener("scroll", handleScroll);
-    })
+    },[])
 
 
     return (
@@ -54,17 +55,32 @@ export const NavBar = () => {
                 </div>
 
                 {/* {Mobile Menu} */}
+                <button 
+                    
+                    onClick={()=> setIsMenuOpen((prev)=>!prev)}
+                    className="md:hidden p-2 text-foreground z-50"
+                    aria-label={isMenuOpen ? "Close Menu" : "Open"}
+                >
+                    {isMenuOpen ? <X size= {24} /> : <Menu size={24}  />}
 
-                <div className={cn("fixed insert-0 bg-background/95 backup-blur-md z-40 flex flex-col items-center justify-center",
+                </button>
+
+                <div className={cn(
+                    "fixed inset-0 bg-background/95 backdrop-blur-md z-40 flex flex-col items-center justify-center",
                     "transition-all duration-300 md:hidden",
-                    isMenuOpen ? "opacity-100 pointer-events-auto" 
-                                : "opacity-0 pointer-event-none"
+                    isMenuOpen ? "opacity-100 pointer-events-auto"  
+                                : "opacity-0 pointer-events-none"
                 )}>
-                    <div className="flex flex-col space-y-8 text-xl ">
+                    <div className="flex flex-col space-y-8 text-xl  ">
                         {navItems.map((items, key) => (
-                            <a key={key} href={items.href} className="text-foreground/80 hover:text-primary transition-colors duration-300 ">
+                            <a key={key} href={items.href} 
+                                className="text-foreground/80 hover:text-primary transition-colors duration-300 "
+                                onClick={()=>setIsMenuOpen(false)}
+                                >
                                 {items.name}
+                                
                             </a>
+
                         ))}
                     </div>
                 </div>
