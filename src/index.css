@@ -156,9 +156,12 @@
 
 @utility card-hover {
   position: relative;
-  transition:
-    transform .3s,
-    box-shadow .3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px); /* Moves the card up by 5px */
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* Adds a larger shadow */
+  }
 }
 
 @utility gradient-border {
