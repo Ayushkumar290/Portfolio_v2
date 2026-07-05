@@ -1,29 +1,54 @@
-import { Mail, MapPin, Phone, Send } from 'lucide-react'
+import { Mail, MapPin, Phone, PhoneCall, Send } from 'lucide-react'
 import React, { useState } from 'react'
 import { BsDiscord } from 'react-icons/bs'
 import { FaGithub, FaLinkedin, FaLinkedinIn } from 'react-icons/fa'
 import { LiaGithub, LiaGithubSquare, LiaLinkedin } from 'react-icons/lia'
 import { cn } from '@/lib/utils'
 import { useToast } from '../hooks/use-toast'
-
+import emailjs from '@emailjs/browser'
 
 export const ContactSection = () => {
-  
+
+  const [formData,setFormData] = useState(
+    {
+      name: "",
+      email: "",
+      message:""
+    }
+  )
+
+
+
+
   const {toast} = useToast();
+
   const [isSubmitting,setIsSubmitting] = useState(false)
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
+  e.preventDefault();
+
+  setIsSubmitting(true);
+
+  emailjs
+    .sendForm(import.meta.SERVICE_ID, import.meta.TEMPLATE_ID, e.target, import.meta.PUBLIC_KEY)
+    .then(() => {
       toast({
-        title: "Message sent!",
-        description:"Thank you fot your message. I'll get back to you soon"
-        
+        title: "Message Sent!",
+        description: "Thank you for your message. I'll get back to you soon.",
       });
+
+      e.target.reset(); // Clear the form
+    })
+    .catch(() => {
+      toast({
+        title: "Failed to Send",
+        description: "Oops! Something went wrong. Please try again.",
+        variant: "destructive", // Remove if your toast doesn't support variants
+      });
+    })
+    .finally(() => {
       setIsSubmitting(false);
-    },1500);
-    
-  }
+    });
+};
 
   return (
     <section
@@ -54,26 +79,26 @@ export const ContactSection = () => {
                   <a href="mailto:hello@gmail.com"
                     className='text-muted-foreground hover:text-primary transition-colors'
                   >
-                    hello@gmail.com
+                    ayush33kumar3@gmail.com
                   </a>
                 </div>
               </div>
               <div className='flex items-start space-x-4'>
                 <div className='p-3 rounded-full bg-primary/10'>
-                  <Phone className='h-6 w-6 text-primaary' />
+                  <Phone className='h-6 w-6 text-primary' />
                 </div>
                 <div>
                   <h4 className='font-medium'>Phone</h4>
                   <a href="tel:+912345678901"
                     className='text-muted-foreground hover:text-primary transition-colors'
                   >
-                    +91 (234) 567-890
+                    +91 8287220698
                   </a>
                 </div>
               </div>
               <div className='flex items-start space-x-4'>
                 <div className='p-3 rounded-full bg-primary/10'>
-                  <MapPin className='h-6 w-6 text-primaary' />
+                  <MapPin className='h-6 w-6 text-primary' />
                 </div>
                 <div>
                   <h4 className='font-medium'>Location</h4>
@@ -111,11 +136,13 @@ export const ContactSection = () => {
                   <input 
                   type="text" 
                   id='name' 
+                  value={formData.name}
                   name= "name" 
                   required 
                   className='w-full px-4 py-3 rounded-md border border-input bg-background 
                   focus:outlind-hidden focus:ring-2 focus:ring-primary '
                   placeholder='Rust Cohle'
+                  onChange={(e) =>setFormData({...formData,name: e.target.value})}
                   />
                 </div>
                 <div>
@@ -129,11 +156,13 @@ export const ContactSection = () => {
                   <input 
                   type="email" 
                   id='email' 
+                  value={formData.email}
                   name= "email" 
                   required 
                   className='w-full px-4 py-3 rounded-md border border-input bg-background 
                   focus:outlind-hidden focus:ring-2 focus:ring-primary '
                   placeholder='John@gmail.com'
+                   onChange={(e) =>setFormData({...formData,email: e.target.value})}
                   />
                 </div>
                 <div>
@@ -147,11 +176,13 @@ export const ContactSection = () => {
                   <textarea 
                    
                   id='message' 
-                  name= "message" 
+                  name= "message"
+                  value={formData.message} 
                   required 
                   className='w-full px-4 py-3 rounded-md border border-input bg-background 
                   focus:outlind-hidden focus:ring-2 focus:ring-primary resize-none'
                   placeholder='Hi, I did like to talk about...  '
+                   onChange={(e) =>setFormData({...formData,message: e.target.value})}
                   />
                 </div>
                 <button
