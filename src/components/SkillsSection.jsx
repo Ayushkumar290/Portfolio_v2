@@ -62,7 +62,7 @@ export const SkillsSection = () => {
 
     return (
         <section 
-            id='skills' 
+            id='Skills' 
             className='py-24 px-4 relative bg-secondary/30'
         > 
             <div className='app-container mx-auto max-w-5xl'>
