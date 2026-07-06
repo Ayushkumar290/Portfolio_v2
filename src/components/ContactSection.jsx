@@ -9,46 +9,53 @@ import emailjs from '@emailjs/browser'
 
 export const ContactSection = () => {
 
-  const [formData,setFormData] = useState(
+  const [formData, setFormData] = useState(
     {
       name: "",
       email: "",
-      message:""
+      message: ""
     }
   )
 
 
 
 
-  const {toast} = useToast();
+  const { toast } = useToast();
 
-  const [isSubmitting,setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  setIsSubmitting(true);
+    setIsSubmitting(true);
+    console.log("SERVICE:", import.meta.env.VITE_SERVICE_ID);
+    console.log("TEMPLATE:", import.meta.env.VITE_TEMPLATE_ID);
+    console.log("KEY:", import.meta.env.VITE_PUBLIC_KEY);
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_SERVICE_ID,
+        import.meta.env.VITE_TEMPLATE_ID,
+        e.target,
+        import.meta.env.VITE_PUBLIC_KEY
+      )
+      .then(() => {
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for your message. I'll get back to you soon.",
+        });
 
-  emailjs
-    .sendForm(import.meta.SERVICE_ID, import.meta.TEMPLATE_ID, e.target, import.meta.PUBLIC_KEY)
-    .then(() => {
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for your message. I'll get back to you soon.",
+        e.target.reset(); // Clear the form
+      })
+      .catch(() => {
+        toast({
+          title: "Failed to Send",
+          description: "Oops! Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-
-      e.target.reset(); // Clear the form
-    })
-    .catch(() => {
-      toast({
-        title: "Failed to Send",
-        description: "Oops! Something went wrong. Please try again.",
-        variant: "destructive", // Remove if your toast doesn't support variants
-      });
-    })
-    .finally(() => {
-      setIsSubmitting(false);
-    });
-};
+  };
 
   return (
     <section
@@ -111,7 +118,7 @@ export const ContactSection = () => {
               </div>
             </div>
             <div className='pt-8'>
-              <h4 className='font-medium mb-4'>Connect With Me</h4> 
+              <h4 className='font-medium mb-4'>Connect With Me</h4>
               <div className='flex space x-4 justify-center gap-4'>
                 <a href="https://www.linkedin.com/in/ayush-kumar-457578307/" target="_blank">
                   <FaLinkedinIn size={30} />
@@ -122,86 +129,86 @@ export const ContactSection = () => {
               </div>
             </div>
           </div>
-            <div className="bg-card p-8 rounded-lg shadow-sd">
+          <div className="bg-card p-8 rounded-lg shadow-sd">
             <h3 className='text-2xl font-semibold mb-6'>Send a Message</h3>
-              <form onSubmit={handleSubmit}  className='space-y-6'>
-                <div>
-                  <label 
+            <form onSubmit={handleSubmit} className='space-y-6'>
+              <div>
+                <label
                   htmlFor="name"
-                  className='block text-sm fornt-medium mb-2'    
-                  >
-                    Your Name
-                    
-                    </label>
-                  <input 
-                  type="text" 
-                  id='name' 
+                  className='block text-sm fornt-medium mb-2'
+                >
+                  Your Name
+
+                </label>
+                <input
+                  type="text"
+                  id='name'
                   value={formData.name}
-                  name= "name" 
-                  required 
+                  name="name"
+                  required
                   className='w-full px-4 py-3 rounded-md border border-input bg-background 
                   focus:outlind-hidden focus:ring-2 focus:ring-primary '
                   placeholder='Rust Cohle'
-                  onChange={(e) =>setFormData({...formData,name: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label 
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div>
+                <label
                   htmlFor="email"
-                  className='block text-sm fornt-medium mb-2'    
-                  >
-                    Your Email
-                    
-                    </label>
-                  <input 
-                  type="email" 
-                  id='email' 
+                  className='block text-sm fornt-medium mb-2'
+                >
+                  Your Email
+
+                </label>
+                <input
+                  type="email"
+                  id='email'
                   value={formData.email}
-                  name= "email" 
-                  required 
+                  name="email"
+                  required
                   className='w-full px-4 py-3 rounded-md border border-input bg-background 
                   focus:outlind-hidden focus:ring-2 focus:ring-primary '
                   placeholder='John@gmail.com'
-                   onChange={(e) =>setFormData({...formData,email: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label 
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+              <div>
+                <label
                   htmlFor="message"
-                  className='block text-sm fornt-medium mb-2'    
-                  >
-                    Message
-                    
-                    </label>
-                  <textarea 
-                   
-                  id='message' 
-                  name= "message"
-                  value={formData.message} 
-                  required 
+                  className='block text-sm fornt-medium mb-2'
+                >
+                  Message
+
+                </label>
+                <textarea
+
+                  id='message'
+                  name="message"
+                  value={formData.message}
+                  required
                   className='w-full px-4 py-3 rounded-md border border-input bg-background 
                   focus:outlind-hidden focus:ring-2 focus:ring-primary resize-none'
                   placeholder='Hi, I did like to talk about...  '
-                   onChange={(e) =>setFormData({...formData,message: e.target.value})}
-                  />
-                </div>
-                <button
-                  type='submit'
-                  disabled= {isSubmitting}
-                  className={cn(
-                    "cosmic-button w-full flex items-center justify-center gap-2",
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                />
+              </div>
+              <button
+                type='submit'
+                disabled={isSubmitting}
+                className={cn(
+                  "cosmic-button w-full flex items-center justify-center gap-2",
 
-                  )}
-                >
-                  {isSubmitting ? "Sending..." : "Send Massage"}
-                  
-                  <Send size={16} />
-                </button>
-              </form>
+                )}
+              >
+                {isSubmitting ? "Sending..." : "Send Massage"}
+
+                <Send size={16} />
+              </button>
+            </form>
           </div>
-        </div> 
+        </div>
 
-        
+
       </div>
     </section>
   )

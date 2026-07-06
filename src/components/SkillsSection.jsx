@@ -53,7 +53,7 @@ const skills = [
 const categories = ["all", "Language", "Frontend", "Backend", "Database", "Tools", "CS Fundamentals"];
 
 export const SkillsSection = () => {
-    const [activeCategory, setActiveCategory] = useState("all");
+    const [activeCategory, setActiveCategory] = useState("Language");
 
     // Filter skills based on the active category
     const filteredSkills = skills.filter(skill => 
