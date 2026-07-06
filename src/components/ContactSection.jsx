@@ -27,9 +27,7 @@ export const ContactSection = () => {
     e.preventDefault();
 
     setIsSubmitting(true);
-    console.log("SERVICE:", import.meta.env.VITE_SERVICE_ID);
-    console.log("TEMPLATE:", import.meta.env.VITE_TEMPLATE_ID);
-    console.log("KEY:", import.meta.env.VITE_PUBLIC_KEY);
+    
     emailjs
       .sendForm(
         import.meta.env.VITE_SERVICE_ID,
